@@ -2,7 +2,6 @@ pragma solidity ^0.8.4;
 
 import "./PXLProperty.sol";
 
-
 // PixelProperty
 contract VirtualRealEstate {
     /* ### Variables ### */
@@ -10,34 +9,30 @@ contract VirtualRealEstate {
     address owner;
     PXLProperty pxlProperty;
     
-    bool initialPropertiesReserved;
-    
     mapping (uint16 => bool) hasBeenSet;
     
     // The amount in % for which a user is paid
     uint8 constant USER_BUY_CUT_PERCENT = 98;
     // Maximum amount of generated PXL a property can give away per minute
     uint8 constant PROPERTY_GENERATES_PER_MINUTE = 1;
-    // The point in time when the initial grace period is over, and users get the default values based on coins burned
-    uint256 GRACE_PERIOD_END_TIMESTAMP;
     // The amount of time required for a Property to generate tokens for payouts
     uint256 constant PROPERTY_GENERATION_PAYOUT_INTERVAL = (1 minutes); //Generation amount
     
-    uint256 ownerEth = 0; // Amount of ETH the contract owner is entitled to withdraw (only Root account can do withdraws)
+    uint256 ownerNativeCurrency = 0; // Amount of ETH the contract owner is entitled to withdraw (only Root account can do withdraws)
     
     // The current system prices of ETH and PXL, for which unsold Properties are listed for sale at
-    uint256 systemSalePriceETH;
+    uint256 systemSalePriceNative;
     uint256 systemSalePricePXL;
     uint8 systemPixelIncreasePercent;
     uint8 systemPriceIncreaseStep;
-    uint16 systemETHStepTally;
+    uint16 systemNativeStepTally;
     uint16 systemPXLStepTally;
-    uint16 systemETHStepCount;
+    uint16 systemNativeStepCount;
     uint16 systemPXLStepCount;
 
     /* ### Events ### */
     event PropertyColorUpdate(uint16 indexed property, uint256[5] colors, uint256 lastUpdate, address indexed lastUpdaterPayee, uint256 becomePublic, uint256 indexed rewardedCoins);
-    event PropertyBought(uint16 indexed property, address indexed newOwner, uint256 ethAmount, uint256 PXLAmount, uint256 timestamp, address indexed oldOwner);
+    event PropertyBought(uint16 indexed property, address indexed newOwner, uint256 nativeAmount, uint256 PXLAmount, uint256 timestamp, address indexed oldOwner);
     event SetUserHoverText(address indexed user, uint256[2] newHoverText);
     event SetUserSetLink(address indexed user, uint256[2] newLink);
     event PropertySetForSale(uint16 indexed property, uint256 forSalePrice);
@@ -64,35 +59,26 @@ contract VirtualRealEstate {
     /* ### PUBLICALLY INVOKABLE FUNCTIONS ### */
     
     /* CONSTRUCTOR */
-    function VirtualRealEstate() public {
+    function VirtualRealEstate(uint256 initialNativeCurrencyPrice) public {
+        require(initialNativeCurrencyPrice > 0);
         owner = msg.sender; // Default the owner to be whichever Ethereum account created the contract
         systemSalePricePXL = 1000; //Initial PXL system price
-        systemSalePriceETH = 19500000000000000; //Initial ETH system price
+        systemSalePriceNative = initialNativeCurrencyPrice; //Initial native token system price (roughly $30 worth)
         systemPriceIncreaseStep = 10;
         systemPixelIncreasePercent = 5;
-        systemETHStepTally = 0;
+        systemNativeStepTally = 0;
         systemPXLStepTally = 0;
-        systemETHStepCount = 1;
+        systemNativeStepCount = 1;
         systemPXLStepCount = 1;
         initialPropertiesReserved = false;
     }
     
     function setPXLPropertyContract(address pxlPropertyContract) public ownerOnly() {
         pxlProperty = PXLProperty(pxlPropertyContract);
-        if (!initialPropertiesReserved) {
-            uint16 xReserved = 45;
-            uint16 yReserved = 0;
-            for(uint16 x = 0; x < 10; ++x) {
-                uint16 propertyID = (yReserved) * 100 + (xReserved + x);
-                _transferProperty(propertyID, owner, 0, 0, 0, 0);
-            }
-            initialPropertiesReserved = true;
-            GRACE_PERIOD_END_TIMESTAMP = now + 3 days; // Extends the three 
-        }
     }
 
     function getSaleInformation() public view ownerOnly() returns(uint8, uint8, uint16, uint16, uint16, uint16) {
-        return (systemPixelIncreasePercent, systemPriceIncreaseStep, systemETHStepTally, systemPXLStepTally, systemETHStepCount, systemPXLStepCount);
+        return (systemPixelIncreasePercent, systemPriceIncreaseStep, systemNativeStepTally, systemPXLStepTally, systemNativeStepCount, systemPXLStepCount);
     }
     
     /* USER FUNCTIONS */
@@ -221,10 +207,10 @@ contract VirtualRealEstate {
         // Protect against underflow
         require(pxlValue <= systemSalePricePXL);
         uint256 pxlLeft = systemSalePricePXL - pxlValue;
-        uint256 ethLeft = systemSalePriceETH / systemSalePricePXL * pxlLeft;
+        uint256 nativeLeft = systemSalePriceNative / systemSalePricePXL * pxlLeft;
         
         // Must have spent enough ETH to cover the ETH left after PXL price was subtracted
-        require(msg.value >= ethLeft);
+        require(msg.value >= nativeLeft);
         
         pxlProperty.burnPXLRewardPXL(msg.sender, pxlValue, owner, pxlValue);
         
@@ -235,13 +221,13 @@ contract VirtualRealEstate {
             systemPXLStepTally -= 1000;
         }
         
-        ownerEth += msg.value;
+        ownerNativeCurrency += msg.value;
 
-        systemETHStepTally += uint16(100 * pxlLeft / systemSalePricePXL);
-        if (systemETHStepTally >= 1000) {
-            systemETHStepCount++;
-            systemSalePriceETH += systemSalePriceETH * 9 / systemETHStepCount / 10;
-            systemETHStepTally -= 1000;
+        systemNativeStepTally += uint16(100 * pxlLeft / systemSalePricePXL);
+        if (systemNativeStepTally >= 1000) {
+            systemNativeStepCount++;
+            systemSalePriceNative += systemSalePriceNative * 9 / systemNativeStepCount / 10;
+            systemNativeStepTally -= 1000;
         }
 
         _transferProperty(propertyID, msg.sender, msg.value, pxlValue, 0, 0);
@@ -275,14 +261,14 @@ contract VirtualRealEstate {
     // Purchase a system-Property in pure ETH
     function buyPropertyInETH(uint16 propertyID) public validPropertyID(propertyID) payable returns(bool) {
         require(pxlProperty.getPropertyOwner(propertyID) == 0);
-        require(msg.value >= systemSalePriceETH);
+        require(msg.value >= systemSalePriceNative);
         
-        ownerEth += msg.value;
-        systemETHStepTally += 100;
-        if (systemETHStepTally >= 1000) {
-            systemETHStepCount++;
-            systemSalePriceETH += systemSalePriceETH * 9 / systemETHStepCount / 10;
-            systemETHStepTally -= 1000;
+        ownerNativeCurrency += msg.value;
+        systemNativeStepTally += 100;
+        if (systemNativeStepTally >= 1000) {
+            systemNativeStepCount++;
+            systemSalePriceNative += systemSalePriceNative * 9 / systemNativeStepCount / 10;
+            systemNativeStepTally -= 1000;
         }
         _transferProperty(propertyID, msg.sender, msg.value, 0, 0, 0);
         return true;
@@ -315,18 +301,18 @@ contract VirtualRealEstate {
     
     /* CONTRACT OWNER FUNCTIONS */
     
-    // Contract owner can withdraw up to ownerEth amount
+    // Contract owner can withdraw up to ownerNativeCurrency amount
     function withdraw(uint256 amount) public ownerOnly() {
-        if (amount <= ownerEth) {
+        if (amount <= ownerNativeCurrency) {
             owner.transfer(amount);
-            ownerEth -= amount;
+            ownerNativeCurrency -= amount;
         }
     }
     
-    // Contract owner can withdraw ownerEth amount
+    // Contract owner can withdraw ownerNativeCurrency amount
     function withdrawAll() public ownerOnly() {
-        owner.transfer(ownerEth);
-        ownerEth = 0;
+        owner.transfer(ownerNativeCurrency);
+        ownerNativeCurrency = 0;
     }
     
     // Contract owner can change who is the contract owner
@@ -368,20 +354,20 @@ contract VirtualRealEstate {
         return true;
     }
     // Transfer ownership of a Property and reset their info
-    function _transferProperty(uint16 propertyID, address newOwner, uint256 ethAmount, uint256 PXLAmount, uint8 flag, address oldOwner) private {
+    function _transferProperty(uint16 propertyID, address newOwner, uint256 nativeAmount, uint256 PXLAmount, uint8 flag, address oldOwner) private {
         require(newOwner != 0);
         pxlProperty.setPropertyOwnerSalePricePrivateModeFlag(propertyID, newOwner, 0, false, flag);
-        PropertyBought(propertyID, newOwner, ethAmount, PXLAmount, now, oldOwner);
+        PropertyBought(propertyID, newOwner, nativeAmount, PXLAmount, now, oldOwner);
     }
     
     // Gets the (owners address, Ethereum sale price, PXL sale price, last update timestamp, whether its in private mode or not, when it becomes public timestamp, flag) for a Property
     function getPropertyData(uint16 propertyID) public validPropertyID(propertyID) view returns(address, uint256, uint256, uint256, bool, uint256, uint32) {
-        return pxlProperty.getPropertyData(propertyID, systemSalePriceETH, systemSalePricePXL);
+        return pxlProperty.getPropertyData(propertyID, systemSalePriceNative, systemSalePricePXL);
     }
     
     // Gets the system ETH and PXL prices
     function getSystemSalePrices() public view returns(uint256, uint256) {
-        return (systemSalePriceETH, systemSalePricePXL);
+        return (systemSalePriceNative, systemSalePricePXL);
     }
     
     // Gets the sale prices of any Property in ETH and PXL
@@ -407,10 +393,5 @@ contract VirtualRealEstate {
             //return (((now < propertyEarnUntil) ? now : propertyEarnUntil - propertyLastUpdate) / PROPERTY_GENERATION_PAYOUT_INTERVAL) * PROPERTY_GENERATES_PER_MINUTE; //Gave too high number wtf?
         }
         return 0;
-    }
-    
-    // Gets whether the contract is still in the intial grace period where we give extra features to color setters
-    function isInGracePeriod() public view returns(bool) {
-        return now <= GRACE_PERIOD_END_TIMESTAMP;
     }
 }
