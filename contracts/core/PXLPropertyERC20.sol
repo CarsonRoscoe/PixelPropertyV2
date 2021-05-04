@@ -9,7 +9,10 @@ import "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract PXLPropertyERC20 is ERC20, ERC20Burnable, ERC20Snapshot, AccessControl, ERC20Permit {
-    uint256 public constant decimals = 0;
+    function decimals() public view virtual override returns (uint8) {
+        return 0;
+    }
+    
 
     /* Access Level Constants */
     bytes32 public constant LEVEL_OWNER = keccak256("LEVEL_ROOT"); // Can set pixelPropertyContract
@@ -53,59 +56,42 @@ contract PXLPropertyERC20 is ERC20, ERC20Burnable, ERC20Snapshot, AccessControl,
         super._beforeTokenTransfer(from, to, amount);
     }
 
-
-
-
      /* ### PixelProperty PXL Functions ### */
-    function rewardPXL(address rewardedUser, uint256 amount) {
+    function rewardPXL(address rewardedUser, uint256 amount) public {
         require(hasRole(LEVEL_PIXEL_PROPERTY, msg.sender));
-        require(rewardedUser != 0);
-        balances[rewardedUser] += amount;
-        totalSupply += amount;
-        Transfer(0, rewardedUser, amount);
+        require(rewardedUser != address(0));
+        _mint(rewardedUser, amount);
     }
     
-    function burnPXL(address burningUser, uint256 amount) {
+    function burnPXL(address burningUser, uint256 amount) public {
         require(hasRole(LEVEL_PIXEL_PROPERTY, msg.sender));
-        require(burningUser != 0);
-        require(balances[burningUser] >= amount);
-        balances[burningUser] -= amount;
-        totalSupply -= amount;
-        Transfer(burningUser, 0, amount);
+        require(burningUser != address(0));
+        require(balanceOf(burningUser) >= amount);
+        _burn(burningUser, amount);
     }
     
-    function burnPXLRewardPXL(address burner, uint256 toBurn, address rewarder, uint256 toReward) {
+    function burnPXLRewardPXL(address burner, uint256 toBurn, address rewarder, uint256 toReward) public {
         require(hasRole(LEVEL_PIXEL_PROPERTY, msg.sender));
-        require(balances[burner] >= toBurn);
+        require(balanceOf(burner) >= toBurn);
         if (toBurn > 0) {
-            balances[burner] -= toBurn;
-            totalSupply -= toBurn;
-            Transfer(burner, 0, toBurn);
+            _burn(burner, toBurn);
         }
-        if (rewarder != 0) {
-            balances[rewarder] += toReward;
-            totalSupply += toReward;
-            Transfer(0, rewarder, toReward);
+        if (rewarder != address(0)) {
+            _mint(rewarder, toReward);
         }
     } 
     
-    function burnPXLRewardPXLx2(address burner, uint256 toBurn, address rewarder1, uint256 toReward1, address rewarder2, uint256 toReward2) {
+    function burnPXLRewardPXLx2(address burner, uint256 toBurn, address rewarder1, uint256 toReward1, address rewarder2, uint256 toReward2) public {
         require(hasRole(LEVEL_PIXEL_PROPERTY, msg.sender));
-        require(balances[burner] >= toBurn);
+        require(balanceOf(burner) >= toBurn);
         if (toBurn > 0) {
-            balances[burner] -= toBurn;
-            totalSupply -= toBurn;
-            Transfer(burner, 0, toBurn);
+            _burn(burner, toBurn);
         }
-        if (rewarder1 != 0) {
-            balances[rewarder1] += toReward1;
-            totalSupply += toReward1;
-            Transfer(0, rewarder1, toReward1);
+        if (rewarder1 != address(0)) {
+            _mint(rewarder1, toReward1);
         }
-        if (rewarder2 != 0) {
-            balances[rewarder2] += toReward2;
-            totalSupply += toReward2;
-            Transfer(0, rewarder2, toReward2);
+        if (rewarder2 != address(0)) {
+            _mint(rewarder2, toReward2);
         }
     }
 }

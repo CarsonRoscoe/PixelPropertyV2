@@ -1,9 +1,10 @@
 const covalentUtils = require('./covalentUtils');
-const fileUtils = require('./fileUtils');
+// const fileUtils = require('./fileUtils');
+const dbUtils = require('./dbUtils');
 
 const ensureEventHistoryIsUpToDate = (dappDef, successCallback) => {
-    fileUtils.ensureContractHistoryFileExists(dappDef.chainId, dappDef.address);
-    fileUtils.getLastStoredBlockNumber( dappDef.chainId, dappDef.address, async (lastBlockNumber) => {
+    // fileUtils.ensureContractHistoryFileExists(dappDef.chainId, dappDef.address);
+    dbUtils.getLastBlockNumber(dappDef.chainId, 'PropertyColorUpdate', async (lastBlockNumber) => {
         let blockFetchSize = 1000;
         let pageSize = 100;
         let pageNumber = 0;
@@ -16,7 +17,7 @@ const ensureEventHistoryIsUpToDate = (dappDef, successCallback) => {
             lastPromise.then((ev) => {
                 console.info('Fetched' + startingBlock + ' to ' + currentBlock);
                 if (ev != null && ev.data != null && ev.data.data != null && ev.data.data.items != null) {
-                    fileUtils.addEventToContractEventHistory(dappDef, ev.data.data.items);
+                    dbUtils.insertEvents(dappDef, ev.data.data.items);
                     startingBlock += blockFetchSize;
                     currentBlock += blockFetchSize;
                     
@@ -42,7 +43,7 @@ const ensureEventHistoryIsUpToDate = (dappDef, successCallback) => {
         if (currentBlock >= dappDef.latest_block) {
             successCallback();
         }
-    });
+    }, dappDef.oldest_block );
 }
 
 

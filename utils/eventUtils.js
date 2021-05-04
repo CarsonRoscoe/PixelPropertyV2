@@ -14,9 +14,9 @@ module.exports = {
 
         switch(name) {
             case 'PropertyBought':
-                return { chainId, blockNumber, name, property : log.args.property, newAddress : log.args.newAddress, oldAddress : log.args.oldAddress, ethAmount : log.args.ethAmount, pxlAmount : log.args.pxlAmount, timestamp : log.args.timestamp  }
+                return { chainId, blockNumber, name, property : log.args.property, newAddress : log.args.newOwner, oldAddress : log.args.oldOwner, ethAmount : log.args.ethAmount, pxlAmount : log.args.PXLAmount, timestamp : log.args.timestamp  }
             case 'PropertyColorUpdate':
-                return { chainId, blockNumber, name, property : log.args.property, colors : log.args.colors, becomePublic : log.args.becomePublic, lastUpdate : log.args.lastUpdate, lastUpdatePayee : log.args.lastUpdatePayee }
+                return { chainId, blockNumber, name, property : log.args.property, colors : log.args.colors, becomePublic : log.args.becomePublic, lastUpdate : log.args.lastUpdate, lastUpdatePayee : log.args.lastUpdaterPayee }
             default:
                 return { chainId, blockNumber, name };
         }
