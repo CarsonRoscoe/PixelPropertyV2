@@ -1,0 +1,188 @@
+@import './animation.scss';
+.canvas {
+    background-color: $color3;
+    display: block;
+    margin-left: -2px;
+    image-rendering: optimizeSpeed;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -o-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    -ms-interpolation-mode: nearest-neighbor;
+    cursor: none;
+    min-height: 400px;
+    min-width: 400px;
+    height: calc(100vh - 60px);
+    width: calc(100vh - 60px);
+    border-radius: 2px;
+    box-shadow: 0px 0px 7px 1px;
+}
+
+.canvasContainer {
+    margin: 0px;
+    display: inline-block;
+    background-color: black;
+    border-radius: 2px;
+    .loading {
+        margin-top: -72px;
+        top: 50%;
+        left: 50%;
+        margin-left: -72px;
+        position: absolute;
+    }
+}
+
+.panelCanvas {
+    padding: 0;
+    margin: auto;
+    display: block;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 2px;
+    box-shadow: 0px 0px 7px 1px;
+}
+
+.zoomCanvasContainer {
+    //border: 2px solid $color5;
+    &.hide {
+        @include animation(fadeout, .5s);
+        opacity: 0;
+    }
+    &.show {
+        @include animation(fadein, .2s);
+        opacity: 1;
+    }
+    .zoomCanvas {
+        background-color: black;
+        // width: $panelWidthSimple;
+        // height: $panelWidthSimple;
+        // max-height: calc(50vh - 12px);
+        width: 80%;
+        height: 80%;
+        margin: 0% 10% 2% 10%;
+        border-radius: 2px;
+        box-shadow: 0px 0px 7px 1px;
+        &.full {
+            width: $panelWidthSimple;
+            height: $panelWidthSimple;
+        }
+    }
+    &.full {
+        width: $panelWidthSimple;
+        height: $panelWidthSimple;
+    }
+}
+
+.banner {
+    height: 40px;
+    text-align: center;
+    font: $font2;
+    .headerButtons {
+        .ppcLabel {
+            width: calc(100% - 400px - 60px);
+            border-right: solid black 2px;
+            border-left: solid black 2px;
+            border-bottom: solid black 2px;
+            border-radius: 0px;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            padding: 0px 8px 8px 8px;
+            display: inline-block;
+            margin-bottom: 4px;
+            height: 24px;
+            .token {
+                width: 16px;
+                vertical-align: middle;
+                margin: 0px 8px;
+            }
+            .text {
+                display: inline-block;
+                font: $font4;
+                color: white;
+                font-weight: 400;
+                vertical-align: middle;
+            }
+            .loading {
+                width: 16px;
+                vertical-align: middle;
+                margin: 0px 8px;
+            }
+        }
+        input[type=button].headerButton {
+            width: inherit;
+            font: $font4;
+            color: white;
+            font-weight: 400;
+            margin: 4px;
+            padding: 4px;
+            border: none;
+            background-color: unset;
+            &.left {
+                float: left;
+                border-right: solid black 2px;
+                border-bottom: solid black 2px;
+                border-radius: 0px;
+                border-bottom-right-radius: 8px;
+                margin-left: 0px;
+                margin-top: 0px;
+                width: 200px;
+                padding: 8px;
+            }
+            &.right {
+                float: right;
+                border-left: solid black 2px;
+                border-bottom: solid black 2px;
+                border-radius: 0px;
+                border-bottom-left-radius: 8px;
+                margin-right: 0px;
+                margin-top: 0px;
+                width: 200px;
+                padding: 8px;
+            }
+        }
+    }
+}
+
+.mainSegmentGroup {
+    margin-left: 15px !important;
+    margin-right: 15px !important;
+    height: calc(100vh - 30px);
+    min-height: 430px;
+    .leftContainer {
+        width: calc(((100vw - (100vh - 30px) - 120px) / 2)) !important;
+        max-width: calc((100vw - 460px) / 2) !important;
+        overflow-y: auto;
+        overflow-x: hidden;
+        border-top-left-radius: 5px !important;
+        border-bottom-left-radius: 5px !important;
+    }
+    .centerContainer {
+        width: calc(100vh - 75px) !important;
+        min-width: 400px;
+    }
+    .rightContainer {
+        width: calc(((100vw - (100vh - 30px) - 120px) / 2)) !important;
+        max-width: calc((100vw - 460px) / 2) !important;
+        overflow-y: auto;
+        overflow-x: hidden;
+        border-top-right-radius: 5px !important;
+        border-bottom-right-radius: 5px !important;
+    }
+    .bidInput {
+        width: calc(100% + 14px) !important;
+    }
+}
+
+.lowerSegment {
+    margin: 0px 1rem 1rem 1rem !important;
+    max-height: 800px;
+}
+
+#footer.footer {
+    margin: 0px 1rem 0px 1rem !important;
+    position: relative;
+    width: calc(100vw - 38px) !important;
+    border-radius: .28571429rem .28571429rem 0px 0px !important
+}

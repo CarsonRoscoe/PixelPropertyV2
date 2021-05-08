@@ -1,0 +1,250 @@
+@import './animation.scss';
+body {
+    background-color: $color1;
+    color: rgba(0, 0, 0, .6);
+    font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    text-transform: none;
+    text-shadow: none;
+    font-weight: 700;
+    line-height: 1em;
+    font-style: normal;
+    text-decoration: none;
+}
+
+.ui.label>.icon {
+    margin: 0px;
+    &.uniform {
+        width: 14px;
+    }
+}
+
+.ui.divider {
+    border-top-color: $color5 !important;
+}
+
+.ui.segment,
+.ui.segments {
+    @include animation(fadein, .8s);
+    border-color: $color2 !important;
+    background-color: $color3 !important;
+    &.attached {
+        border-color: $color2 !important;
+        border-left: 1px solid darken($color3, 10%);
+        border-right: 1px solid darken($color3, 10%);
+        border-top: 0;
+        border-bottom: 0;
+    }
+}
+
+.ui.attached {
+    &.button {
+        @include animation(fadein, .8s);
+        border-color: $color5 !important;
+        background-color: darken($color3, 5%);
+        border-right: 1px solid darken($color3, 10%);
+        border-left: 1px solid darken($color3, 10%);
+        box-shadow: none !important;
+        width: calc(100% + 2px);
+        margin-left: -1px !important;
+        &.top {
+            border-top: 1px solid darken($color3, 10%);
+        }
+        &.bottom {
+            border-bottom: 1px solid darken($color3, 10%);
+        }
+    }
+    &.button:hover {
+        background-color: darken($color3, 10%);
+    }
+}
+
+.ui.items {
+    margin: 1em 0px;
+    .content {
+        font-size: 1.3em !important;
+        padding-left: .5em !important;
+    }
+}
+
+.buySlider {
+    width: 100%;
+    div {
+        width: 97%;
+    }
+    input {
+        padding: 0px !important;
+        margin: 8px !important;
+        width: 100%;
+    }
+}
+
+tr.segmentButton {
+    &:hover {
+        background-color: darken($color3, 4%) !important;
+        cursor: pointer;
+    }
+    &:active {
+        background-color: darken($color3, 7%) !important;
+    }
+}
+
+.ui.stretched.divided.grid {
+    height: calc(100% + 2rem);
+    .row {
+        height: 100%;
+    }
+    .column {
+        height: 100%;
+        .segment {
+            height: 100%;
+        }
+    }
+}
+
+.ui.segment.active.loading.tab.topPane {
+    &::before {
+        top: 50%;
+    }
+    &::after {
+        top: 50%;
+    }
+}
+
+.active.tab.topPane {
+    height: 400px;
+    overflow-y: auto;
+}
+
+.ui.segment.tab {
+    &.topPane {
+        height: 420px;
+    }
+    &.middlePane {
+        height: 400px;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    &.bottomPane {
+        height: 400px;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+}
+
+.ui.modal {
+    >.header,
+    >.content,
+    >.actions {
+        @include animation(fadein, .6s);
+        background-color: $color1;
+    }
+}
+
+.ui.disabled.input {
+    opacity: 1;
+    @include animation(fadein, .6s);
+}
+
+.item.xLabel {
+    float: left;
+}
+
+.item.yLabel {
+    text-align: right
+}
+
+.ui.fluid.button.delistButton {
+    margin-top: -6px !important;
+}
+
+.ui.button:not(.inverted),
+.bidButton:not(.inverted) {
+    color: $color5;
+    background-color: $color4 !important;
+    box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, .8);
+    &.primary {
+        background-color: $color4 !important;
+        &:hover {
+            background-color: lighten($color4, 10%) !important;
+        }
+        &.active {
+            background-color: lighten($color4, 15%) !important;
+        }
+    }
+    &.secondary {
+        background-color: $color2 !important;
+        &:hover {
+            background-color: lighten($color2, 10%) !important;
+        }
+        &.active {
+            background-color: lighten($color2, 15%) !important;
+        }
+    }
+    &:hover {
+        background-color: lighten($color4, 10%) !important;
+    }
+    &.active {
+        background-color: lighten($color4, 15%) !important;
+    }
+}
+
+.ui.label,
+.ui.popup,
+.ui.popup::before {
+    background-color: $color4;
+    border-color: $color4;
+}
+
+.pixelsOwnedItem {
+    height: 42px;
+}
+
+.ui.mini.floating.message {
+    .icon {
+        float: right;
+        margin: 0;
+    }
+    p {}
+}
+
+.lowerSegment {
+    .row.gridItem {
+        &:hover {
+            background-color: lighten($color4, 10%) !important;
+            cursor: pointer;
+        }
+        &.active {
+            background-color: lighten($color4, 15%) !important;
+        }
+    }
+}
+
+.lowerSegment,
+.mainSegmentGroup,
+#footer.footer {
+    box-shadow: $color2 2px 2px 10px 2px !important;
+}
+
+.infoMessage {
+    background-color: $color1 !important;
+}
+
+.modeButton.primary {
+    -webkit-animation-name: shake;
+    /* Safari 4.0 - 8.0 */
+    -webkit-animation-duration: 10s;
+    /* Safari 4.0 - 8.0 */
+    animation-name: shake;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+}
+
+.ui.grid.detailTable {
+    @include animation(fadein, .6s);
+}
+
+.tableBodyUi {
+    min-height: 400px;
+    max-height: 400px;
+    overflow-y: auto;
+}

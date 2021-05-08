@@ -1,0 +1,12 @@
+.clickLoader {
+    position: absolute;
+    pointer-events: none;
+}
+
+.progress {
+    max-width: 20px;
+    min-width: 0px;
+    width: 0px;
+    height: 5px;
+    background-color: white;
+}

@@ -1,0 +1,69 @@
+body {
+    margin: 0px;
+}
+
+.page {
+    height: 100vh;
+}
+
+.tiled {
+    background-color: $color2;
+}
+
+.infoBox {
+    height: 100%;
+}
+
+
+/*.top {
+    height: 100vh;
+    .infoBox {
+        display: inline-block;
+        width: 100%
+    }
+    .leftMain {
+        width: $panelWidth;
+        float: left;
+        display: inline-block;
+        z-index: 5000;
+        height: calc(90vh + 20px);
+        margin-left: 60px;
+        padding: 6px;
+        &.full {
+            margin-left: 0px;
+            width: $panelWidthSimple;
+        }
+    }
+    .centerMain {
+        width: calc(90vh + 20px);
+        text-align: center;
+        display: inline-block;
+        height: 100vh;
+    }
+    .rightMain {
+        width: $panelWidth;
+        float: right;
+        display: inline-block;
+        z-index: 5000;
+        height: calc(90vh + 20px);
+        margin-right: 60px;
+        padding: 6px;
+        &.full {
+            margin-right: 0px;
+            width: $panelWidthSimple;
+        }
+    }
+}*/
+
+.contractAction {
+    border-radius: 4px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+::placeholder {
+    color: $color3;
+    opacity: .5;
+}

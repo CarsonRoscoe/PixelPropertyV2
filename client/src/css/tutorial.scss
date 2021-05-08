@@ -1,0 +1,136 @@
+.ui.page.modals.dimmer.active {
+     :has(>.actions) {
+        background-color: rgba(0, 0, 0, 0);
+    }
+    position: fixed;
+    background-color: rgba(0, 0, 0, .90);
+}
+
+.tutorialDimmer#tutorialDimmer {
+    margin-top: 0px !important;
+    background-color: rgba(0, 0, 0, .3);
+    box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, .3) !important;
+    &.step0 {}
+    &.step1 {
+        top: 20px;
+        width: 20vw;
+        max-width: 25vw;
+        left: auto;
+        right: 20px;
+        margin: 0;
+    }
+    &.step2 {
+        top: 30vh;
+        width: 40vw;
+        right: auto;
+        left: 10vw;
+        margin: 0;
+    }
+    &.step3 {}
+    &.step4 {
+        width: 80vw;
+        left: 10vw;
+        right: 10vw;
+        margin: 0;
+        top: 12.5%;
+        transform: translateY(-50%);
+    }
+    &.step5 {
+        width: 35vw;
+        right: 20%;
+        left: auto;
+        margin: 0;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    &.step6 {
+        top: 50%;
+        left: 50%;
+        transform: translateY(-50%);
+    }
+    &.step7 {
+        top: 50%;
+        left: 50%;
+        transform: translateY(-50%);
+    }
+}
+
+.tutorialStep.actions {
+    &.step3 {
+        background-color: $color3 !important;
+        -moz-box-shadow: inset 0 0 5px 5px rgba(0, 0, 0, .90) !important;
+        -webkit-box-shadow: inset 0 0 5px 5px rgba(0, 0, 0, .90) !important;
+        box-shadow: inset 0 0 5px 5px rgba(0, 0, 0, .90) !important;
+        .ui.divided {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+    }
+    &.step4 {
+        right: 5%;
+        left: 5%;
+        transform: translate(60%, 17.5%);
+    }
+    &.step5 {
+        right: auto;
+        left: 5%;
+        transform: translateX(50%);
+    }
+}
+
+#step0,
+#step1,
+#step2,
+#step3,
+#step4,
+#step5,
+#step6,
+#step7 {
+    &.tutorialStep {
+        @include animation(fadein, 1s);
+        z-index: 1000000;
+        -moz-box-shadow: inset 0 0 10px 10px rgba(0, 0, 0, .90);
+        -webkit-box-shadow: inset 0 0 10px 10px rgba(0, 0, 0, .90);
+        box-shadow: inset 0 0 10px 10px rgba(0, 0, 0, .90);
+        &.step1 {
+            border: none;
+        }
+    }
+}
+
+.tutorialStep {
+    @include animation(fadein, 1s);
+    z-index: 1000000;
+    -moz-box-shadow: inset 0 0 10px 10px rgba(0, 0, 0, .90);
+    -webkit-box-shadow: inset 0 0 10px 10px rgba(0, 0, 0, .90);
+    box-shadow: inset 0 0 10px 10px rgba(0, 0, 0, .90);
+    &.step1 {
+        border: none;
+    }
+}
+
+.tutorialStep.actions {
+    @include animation(fadein, 1s);
+    z-index: 1000000;
+    -moz-box-shadow: inset 0 0 10px 10px rgba(0, 0, 0, .90);
+    -webkit-box-shadow: inset 0 0 10px 10px rgba(0, 0, 0, .90);
+    box-shadow: inset 0 0 10px 10px rgba(0, 0, 0, .90);
+    &.step1 {
+        width: calc(((100vw - (100vh - 30px) - 120px) / 2) + 50px) !important;
+        max-width: calc((100vw - 460px) / 2) !important;
+    }
+}
+
+#hiddenForward,
+.hiddenForward {
+    z-index: 1200;
+    background-color: transparent !important;
+    border: none;
+    .ui.input {
+        opacity: .1;
+    }
+}
+
+.forceBehindTutorial {
+    z-index: 100;
+}

@@ -1,0 +1,23 @@
+.panel {
+    background-color: $color2;
+    color: $color5;
+    padding: 4px;
+    margin: 4px;
+    box-shadow: $color2 1px 1px 1px 1px;
+    div {
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .panelDivider {
+        -webkit-margin-before: 1px;
+        -webkit-margin-after: 1px;
+        border: solid black 1px;
+        border-top: none;
+    }
+    &:active {
+        box-shadow: $color2 0px 0px 1px 1px;
+    }
+    &:hover {
+        cursor: pointer;
+    }
+}
