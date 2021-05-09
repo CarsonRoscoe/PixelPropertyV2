@@ -19,7 +19,9 @@ contract PXLPropertyERC1155 is ERC1155, AccessControl, IPXLPropertyCanvasTokens 
     // Property Owner's hover text
     mapping (address => uint256[2]) public ownerHoverText;
 
-    constructor() public ERC1155("https://pixelproperty.io/nft/{id}.json") {
+
+
+    constructor() public ERC1155("https://pixelproperty.io/nft/{id}.jsond") {
         super._setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
         for(uint i = 0; i < 1000; ++i) {
             _mint(msg.sender, i, 1, "");

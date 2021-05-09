@@ -4,12 +4,12 @@ pragma solidity ^0.8.3;
 import "../interfaces/IUsePXLPropertyCanvas.sol";
 import "../interfaces/IPXLPropertyERC20.sol";
 import "../interfaces/IPXLPropertyCanvasTokens.sol";
+import "hardhat/console.sol";
 
 contract VirtualCanvas is IUsePXLPropertyCanvas {
     /* ### Variables ### */
     // Contract owner
     address owner;
-
 
     // Maximum amount of generated PXL a property can give away per minute
     uint8 constant PROPERTY_GENERATES_PER_MINUTE = 1;
@@ -17,9 +17,10 @@ contract VirtualCanvas is IUsePXLPropertyCanvas {
     uint256 constant PROPERTY_GENERATION_PAYOUT_INTERVAL = (1 minutes); //Generation amount
     
     mapping (uint16 => bool) hasBeenSet;
+    mapping (uint16 => uint256) propertyPXLBalances;
 
     IPXLPropertyERC20 pxlPropertyTokens;
-    IPXLPropertyCanvasTokens pxlPropertyCanvas;
+    IPXLPropertyCanvas pxlPropertyCanvas;
      
     /* ### MODIFIERS ### */
 
@@ -38,12 +39,14 @@ contract VirtualCanvas is IUsePXLPropertyCanvas {
 
     constructor(address pxlPropertyContract) {
         owner = msg.sender;
-        this.setPXLPropertyContract(pxlPropertyContract);
+
+        pxlPropertyTokens = IPXLPropertyERC20(pxlPropertyContract);
+        pxlPropertyCanvas = IPXLPropertyCanvas(pxlPropertyContract);
     }
 
     function setPXLPropertyContract(address pxlPropertyContract) external override ownerOnly() {        
         pxlPropertyTokens = IPXLPropertyERC20(pxlPropertyContract);
-        pxlPropertyCanvas = IPXLPropertyCanvasTokens(pxlPropertyContract);
+        pxlPropertyCanvas = IPXLPropertyCanvas(pxlPropertyContract);
     }
     
     // Contract owner can change who is the contract owner
@@ -53,7 +56,6 @@ contract VirtualCanvas is IUsePXLPropertyCanvas {
 
     /* USER FUNCTIONS */
 
-     
     // Update the 10x10 image data for a Property, triggering potential payouts if it succeeds
     function setColors(uint16 propertyID, uint256[5] calldata newColors, uint256 PXLToSpend) external override validPropertyID(propertyID) returns(bool) {
         uint256 projectedPayout = this.getProjectedPayout(propertyID);
@@ -104,6 +106,15 @@ contract VirtualCanvas is IUsePXLPropertyCanvas {
         return false;
     }
 
+    // Shortterm solution. Longterm solution is to deploy a contract that becomes the owner who can have this call triggered via the actual owner via a Mainnet oracle
+    function transferPropertyPXL(uint16 propertyID, address to, uint256 amount) public validPropertyID(propertyID) ownerOnly() returns (bool) {
+        require(propertyPXLBalances[propertyID] > 0);
+        require(amount <= propertyPXLBalances[propertyID]);
+        require(to != address(0));
+        pxlPropertyTokens.rewardPXL(to, amount);
+        propertyPXLBalances[propertyID] -= amount;
+        return true;
+    }
 
       
     /* ## PRIVATE FUNCTIONS ## */
@@ -126,7 +137,8 @@ contract VirtualCanvas is IUsePXLPropertyCanvas {
             uint256 pxlSpent = pxlToSpend + 1; //All pxlSpent math uses N+1, so built in for convenience
             
             uint256 projectedAmount = this.getProjectedPayout(propertyIsInPrivateMode, propertyLastUpdate, propertyEarnUntil);
-            pxlPropertyTokens.burnPXLRewardPXLx2(msg.sender, pxlToSpend, propertyLastUpdater, projectedAmount, propertyOwner, projectedAmount);
+            pxlPropertyTokens.burnPXLRewardPXL(msg.sender, pxlToSpend, propertyLastUpdater, projectedAmount);
+            propertyPXLBalances[propertyID] += projectedAmount;
             
             //BecomePublic = (N+1)/2 minutes of user-private mode
             //EarnUntil = (N+1)*5 coins earned max/minutes we can earn from

@@ -9,4 +9,5 @@ library Constants {
     bytes32 public constant LEVEL_FLAGGER = keccak256("LEVEL_FLAGGER"); // nsfw/flagging
     bytes32 public constant LEVEL_PIXEL_PROPERTY = keccak256("LEVEL_PIXEL_PROPERTY"); // Power over PXL generation/burning & Property ownership 
     bytes32 public constant LEVEL_PROPERTY_DAPPS = keccak256("MINLEVEL_PROPERTY_DAPPSTER_ROLE"); // Power over manipulating property data
+    bytes32 public constant LEVEL_ROUTER = keccak256("LEVEL_ROUTER"); // Power over manipulating property data
 }

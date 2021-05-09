@@ -18,6 +18,7 @@ interface IPXLPropertyCanvas {
     function properties(uint16 propertyID) external view returns (uint8 flag, bool isInPrivateMode, address owner, address lastUpdater, uint256 salePrice, uint256 lastUpdate, uint256 becomePublic, uint256 earnUntil);
 
     /* ### PropertyDapp Functions ### */
+    function setPropertyPrivateMode(uint16 propertyID, bool isInPrivateMode) external;
     function setPropertyColors(uint16 propertyID, uint256[5] memory colors) external;
     function setPropertyRowColor(uint16 propertyID, uint8 row, uint256 rowColor) external;
     
@@ -36,4 +37,8 @@ interface IPXLPropertyCanvas {
     function getPropertyLastUpdate(uint16 propertyID) external view returns(uint256);
     function getPropertyBecomePublic(uint16 propertyID) external view returns(uint256);
     function getPropertyEarnUntil(uint16 propertyID) external view returns(uint256);
+    function getPropertyLastUpdaterBecomePublic(uint16 propertyID) external view returns (address, uint256);
+    function getPropertyPrivateModeLastUpdateEarnUntil(uint16 propertyID) external view returns (bool, uint256, uint256);
+    function getPropertyFlag(uint16 propertyID) external view returns(uint8);
+    function getPropertyPrivateMode(uint16 propertyID) external view returns(bool);
 }

@@ -150,23 +150,45 @@ let pxlPropertyUnitTests;
 
 describe("Full Test", function() {
   it("PXLProperty Testing Deployment", async function() {
-    const PXLProperty = await ethers.getContractFactory("KovanPXLProperty");
-    const pxlProperty = await PXLProperty.deploy(1000000000);
+    try {
+      accounts = await ethers.getSigners();
+  
+      const PXLProperty = await ethers.getContractFactory("KovanPXLProperty");
+      const pxlProperty = await PXLProperty.deploy(1000000000);
+  
+      const PXLPropertyL2_1 = await ethers.getContractFactory("MumbaiPXLProperty");
+      const pxlPropertyL2_1 = await PXLPropertyL2_1.deploy(1000000000);
 
-    const VirtualRealEstateV2 = await ethers.getContractFactory("VirtualRealEstateV2");
-    const virtualRealEstateV2 = await VirtualRealEstateV2.deploy("uri", pxlProperty.address, pxlProperty.address);
+      const PXLPropertyL2_2 = await ethers.getContractFactory("ArbitrumPXLProperty");
+      const pxlPropertyL2_2 = await PXLPropertyL2_2.deploy(1000000000);
 
-    accounts = await ethers.getSigners();
-
-    await pxlProperty.deployed();
-
-    await virtualRealEstateV2.deployed();
-
-    let a = await pxlProperty.grantRole( keccak256(toUtf8Bytes('LEVEL_PIXEL_PROPERTY')), virtualRealEstateV2.address);
-
-    let b = await virtualRealEstateV2.setPXLPropertyContract(pxlProperty.address);
-
-    pxlPropertyTestInstance = pxlProperty;
+      await pxlProperty.deployed();
+      await pxlPropertyL2_1.deployed();
+      await pxlPropertyL2_2.deployed();
+  
+      const VirtualRealEstateV2 = await ethers.getContractFactory("VirtualRealEstateV2");
+      const virtualRealEstateV2 = await VirtualRealEstateV2.deploy("https://pixelproperty.io/nft/{id}", pxlProperty.address, pxlProperty.address);
+      
+      const VirtualCanvas = await ethers.getContractFactory("VirtualCanvas");
+      const virtualCanvas_1 = await VirtualCanvas.deploy(pxlPropertyL2_1.address);
+      const virtualCanvas_2 = await VirtualCanvas.deploy(pxlPropertyL2_2.address);
+  
+      await virtualRealEstateV2.deployed();
+      await virtualCanvas_1.deployed();
+      await virtualCanvas_2.deployed();
+  
+      let main = await pxlProperty.grantRole( keccak256(toUtf8Bytes('LEVEL_PIXEL_PROPERTY')), virtualRealEstateV2.address);
+      let l2_1 = await pxlPropertyL2_1.grantRole( keccak256(toUtf8Bytes('LEVEL_PIXEL_PROPERTY')), virtualCanvas_1.address);
+      let l2_2 = await pxlPropertyL2_2.grantRole( keccak256(toUtf8Bytes('LEVEL_PIXEL_PROPERTY')), virtualCanvas_2.address);
+  
+      let main_2 = await virtualRealEstateV2.setPXLPropertyContract(pxlProperty.address);
+      let l2_1_ = await virtualCanvas_1.setPXLPropertyContract(pxlPropertyL2_1.address);
+      let l2_2_ = await virtualCanvas_2.setPXLPropertyContract(pxlPropertyL2_2.address);
+  
+      pxlPropertyTestInstance = pxlProperty;
+    } catch (e) {
+      console.info(e);
+    }
     
   });
 });
