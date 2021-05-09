@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <script>
+            let minETHPercent = 0.05; // 5% increase
+            let minPXLPercent = 0.05; // 10% increase
+            let minETHAmount = 0.0002; // Min 80 cent increase per
+            let minPXLAmount = 10;
+            
+            let startingETH = 0.0025; // $1 CAD today
+            let startingPXL = 100;
+
+            let analyzePurchase = function (pxlBought, ethBought) {
+                console.log("AnalyzePurchase:: " + pxlBought + " PXL purchases and " + ethBought + " ETH purchases");
+                let pxl = startingPXL;
+                let eth = startingETH;
+                let pxlTotal = 0;
+                let ethTotal = 0;
+                for(let i = 0; i < pxlBought; i++) {
+                    pxlTotal += pxl;
+                    if (minPXLAmount < (minPXLPercent * pxl)) {
+                        pxl += minPXLAmount;
+                    } else {
+                        pxl += minPXLPercent * pxl;
+                    }
+                }
+                for(let i = 0; i < ethBought; i++) {
+                    ethTotal += eth;
+                    if (minETHAmount < (minETHPercent * eth)) {
+                        eth += minETHAmount;
+                    } else {
+                        eth += minETHPercent * eth;
+                    }
+                }
+                console.log("PXL Total: " + pxlTotal  + " | PXL System Price: " + pxl);
+                console.log((pxlTotal / 60 / 24 / 1000) + " days of total generation");
+                console.log("ETH Total: " + ethTotal  + " | ETH System Price: " + eth);
+                console.log("$" + (ethTotal * 400 * 1.3) + "CAD");
+            }
+            
+            analyzePurchase(5000, 5000);
+        </script>
+        
+
+    </body>
+</html>

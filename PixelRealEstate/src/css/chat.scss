@@ -1,0 +1,11 @@
+.chatMessages {
+    height: 350px !important;
+    max-height: 350px !important;
+    min-height: 350px !important;
+    overflow-y: auto;
+    padding: 4px !important;
+}
+
+.sendMessageInput {
+    width: 99%;
+}

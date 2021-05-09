@@ -1,0 +1,64 @@
+contract VirtualRealEstate:
+    events:
+        event PropertyColorUpdate(uint24 indexed property, uint256[10] colors, uint256 lastUpdate, address indexed lastUpdaterPayee, uint256 becomePublic)
+        event PropertyBought(uint24 indexed property, address indexed newOwner, uint256 ethAmount, uint256 PXLAmount, uint256 timestamp)
+        event SetUserHoverText(address indexed user, uint256[2] newHoverText);
+        event SetUserSetLink(address indexed user, uint256[2] newLink);
+        event PropertySetForSale(uint24 indexed property, uint256 forSalePrice);
+        event DelistProperty(uint24 indexed property);
+        event SetPropertyPublic(uint24 indexed property);
+        event SetPropertyPrivate(uint24 indexed property, uint32 numHoursPrivate)
+        event Bid(uint24 indexed property, uint256 bid, uint256 timestamp);
+
+    views:
+        getForSalePrices(uint24 propertyID) view returns(uint256, uint256) 
+        getHoverText(address user) view returns(uint256[2])
+        getLink(address user) view returns(uint256[2])
+        getPropertyColors(uint24 propertyID)view returns(uint256[10])
+        getPropertyData(uint24 propertyID) view returns(address, uint256, uint256, uint256, bool, uint8 flag)
+        getProjectedPayout(uint24 propertyID) view returns(uint256)
+        getSystemSalePrices(uint24 propertyID) view returns(uint256, uint256)
+        isInGracePeriod() view returns(bool)
+
+    functions:
+        setHoverText(uint256[2] text)
+            - SetUserHoverText(msg.sender, text)
+        setLink(uint256[2] link)
+            - SetUserSetLink(msg.sender, link)
+        setColors(uint24 propertyID, uint256[10] newColors, PXLToSpend)
+            - PropertyColorUpdate(propertyID, newColors, timeUpdate, lastUpdaterPayee, property.becomePublic)
+        setPropertyMode(uint24 propertyID, bool isInPrivateMode, uint32 numHoursPrivate)
+            - SetPropertyPrivate(propertyID, numHoursPrivate)
+            - SetPropertyPublic(propertyID)
+        setRowColors(uint24 propertyID, uint8 row, uint256 newColorData, uint256 PXLToSpend)
+            - PropertyColorUpdatePixel(propertyID, row, newColorData, property.becomePublic)
+        transferProperty(uint24 propertyID, address newOwner)
+            - PropertyBought(propertyID, newOwner, 0, 0, now)
+        buyProperty(uint24 propertyID, uint256 PXLValue)
+            - PropertyBought(propertyID, property.owner, msg.value, PXLValue, now)
+        buyPropertyInPXL(uint24 propertyID, uint256 PXLValue)
+            - PropertyBought(propertyID, property.owner, 0, property.salePrice, now)
+        buyPropertyInETH(uint24 propertyID)
+            - PropertyBought(propertyID, property.owner, msg.value, 0, now)
+        listForSale(uint24 propertyID, uint128 price )
+            - PropertySetForSale(propertyID, property.salePrice)
+        delist(uint24 propertyID)
+            - DelistProperty(propertyID)
+        makeBid(uint24 propertyID, uint256 amountToBid)
+            - Bid(propertyID, amountToBid, now)
+
+    ownerFunctions:
+        withdraw(uint256 amount)
+        withdrawAll()
+        changeOwners(address newOwner)
+
+ChangeLog:
+21/02/2018: Added (uint256 PXLToSpend) as setColors 3rd parameter
+24/02/2018: setHoverText/getHoverText/setLink/getLink & corresponding events are now byte[64] as data-type (from bytes32[2])
+28/02/2018: Added becomePublic timestamp to getPropertyData return
+28/02/2018: Added Bid event, makeBid function and added lastBid return to getPropertyData
+03/03/2018: Changed SetHoverText/SetLink/GetHoverText/GetLink to uint256[2] data type
+03/03/2018: Changed SetRowColors parameters to include PXLSpent
+03/03/2018: Replaced "lastBid" from getPropertyData returns with "flag"
+08/03/2018: Added timestamp to Bid event
+28/03/2018: Added becomePublic timestamp to PropertyColorUpdate, isInGravePeriod view and more indexes to PropertyColorUpdate & PropertyBought

@@ -1,0 +1,55 @@
+@import './Style.scss';
+@import './alerts.scss';
+@import './animation.scss';
+@import './App.scss';
+@import './canvas.scss';
+@import './PixelDescriptionBox.scss';
+@import './ui.scss';
+@import './Zoom.scss';
+@import './ErrorBox.scss';
+@import './switch.scss';
+@import './Panel.scss';
+@import './container.scss';
+@import './Loader.scss';
+@import './semantic-override.scss';
+@import './tables.scss';
+@import './tutorial.scss';
+@import './scroll-left.scss';
+@import './chat.scss';
+@font-face {
+    font-family: 'Unibody8Pro-Bold';
+    src: url('/assets/fonts/Unibody8Pro-Bold.otf') format('opentype');
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.hideElement {
+    display: none !important;
+}
+
+* ::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+}
+
+* ::-webkit-scrollbar-corner {
+    display: none;
+}
+
+* ::-webkit-scrollbar-thumb {
+    cursor: pointer;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, .25);
+    -webkit-transition: color .2s ease;
+    transition: color .2s ease;
+}
+
+* ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, .1);
+    border-radius: 0;
+}

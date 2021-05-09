@@ -1,0 +1,22 @@
+.errorBox {
+    width: 100%;
+    margin: auto;
+    .error {
+        background-color: orange;
+        border: 2px solid black;
+        padding: 12px;
+        margin: 4px 0px;
+        border-radius: 8px;
+        width: calc(100% - 28px);
+        .close {
+            display: inline-block;
+            float: right;
+            margin: auto;
+            cursor: pointer;
+        }
+        .message {
+            display: inline-block;
+            width: calc(100% - 30px);
+        }
+    }
+}

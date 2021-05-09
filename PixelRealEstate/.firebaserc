@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "pixelpropertyiodev",
+    "prod": "pixelpropertyioprod"
+  }
+}

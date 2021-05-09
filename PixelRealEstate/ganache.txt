@@ -1,0 +1,33 @@
+INFO [04-08|22:05:40] Maximum peer count                       ETH=25 LES=0 total=25
+INFO [04-08|22:05:40] Starting peer-to-peer node               instance=Geth/v1.8.3-stable/darwin-amd64/go1.10.1
+INFO [04-08|22:05:40] Allocated cache and file handles         database=/Users/jaegarsarauer/Library/Ethereum/rinkeby/geth/chaindata cache=768 handles=1024
+INFO [04-08|22:05:40] Persisted trie from memory database      nodes=355 size=65.27kB time=465.79µs gcnodes=0 gcsize=0.00B gctime=0s livenodes=1 livesize=0.00B
+INFO [04-08|22:05:40] Initialised chain configuration          config="{ChainID: 4 Homestead: 1 DAO: <nil> DAOSupport: true EIP150: 2 EIP155: 3 EIP158: 3 Byzantium: 1035301 Constantinople: <nil> Engine: clique}"
+INFO [04-08|22:05:40] Initialising Ethereum protocol           versions="[63 62]" network=4
+INFO [04-08|22:05:40] Loaded most recent local header          number=2078685 hash=69382b…6c10e6 td=3869489
+INFO [04-08|22:05:40] Loaded most recent local full block      number=2078685 hash=69382b…6c10e6 td=3869489
+INFO [04-08|22:05:40] Loaded most recent local fast block      number=2078685 hash=69382b…6c10e6 td=3869489
+INFO [04-08|22:05:40] Loaded local transaction journal         transactions=0 dropped=0
+INFO [04-08|22:05:40] Regenerated local transaction journal    transactions=0 accounts=0
+WARN [04-08|22:05:40] Blockchain not empty, fast sync disabled 
+INFO [04-08|22:05:40] Starting P2P networking 
+INFO [04-08|22:05:43] UDP listener up                          self=enode://b4a13fa35831c2515bf1c1d839b31fb0b27eace9c70872ee645ecfd70fd8b60ec8ea12c1c4024564f0e8ed284ed8abd91072026f3fd0b90d8b4b6a4902b8f9c5@[::]:30303
+INFO [04-08|22:05:43] RLPx listener up                         self=enode://b4a13fa35831c2515bf1c1d839b31fb0b27eace9c70872ee645ecfd70fd8b60ec8ea12c1c4024564f0e8ed284ed8abd91072026f3fd0b90d8b4b6a4902b8f9c5@[::]:30303
+INFO [04-08|22:05:43] IPC endpoint opened                      url=/Users/jaegarsarauer/Library/Ethereum/rinkeby/geth.ipc
+INFO [04-08|22:05:43] HTTP endpoint opened                     url=http://127.0.0.1:8545                                  cors=http://localhost:3000 vhosts=localhost
+INFO [04-08|22:05:53] Block synchronisation started 
+INFO [04-08|22:05:54] Imported new chain segment               blocks=2 txs=7 mgas=0.721 elapsed=69.345ms mgasps=10.393 number=2078687 hash=3fa69c…4ee00d cache=40.56kB
+INFO [04-08|22:05:58] Got interrupt, shutting down... 
+INFO [04-08|22:05:58] HTTP endpoint closed                     url=http://127.0.0.1:8545
+INFO [04-08|22:05:58] IPC endpoint closed                      endpoint=/Users/jaegarsarauer/Library/Ethereum/rinkeby/geth.ipc
+INFO [04-08|22:05:58] Writing cached state to disk             block=2078687 hash=3fa69c…4ee00d root=2d66b5…ea224f
+INFO [04-08|22:05:58] Persisted trie from memory database      nodes=107 size=37.74kB time=618.509µs gcnodes=0 gcsize=0.00B gctime=0s livenodes=6 livesize=2.82kB
+INFO [04-08|22:05:58] Writing cached state to disk             block=2078686 hash=76ce15…130cc0 root=012d6d…7f9fa1
+INFO [04-08|22:05:58] Persisted trie from memory database      nodes=5   size=2.82kB  time=74.884µs  gcnodes=0 gcsize=0.00B gctime=0s livenodes=1 livesize=0.00B
+INFO [04-08|22:05:58] Writing cached state to disk             block=2078560 hash=4c6b3f…2319ec root=2aef38…9c064f
+INFO [04-08|22:05:58] Persisted trie from memory database      nodes=0   size=0.00B   time=2.298µs   gcnodes=0 gcsize=0.00B gctime=0s livenodes=1 livesize=0.00B
+INFO [04-08|22:05:58] Blockchain manager stopped 
+INFO [04-08|22:05:58] Stopping Ethereum protocol 
+INFO [04-08|22:05:58] Ethereum protocol stopped 
+INFO [04-08|22:05:58] Transaction pool stopped 
+INFO [04-08|22:05:58] Database closed                          database=/Users/jaegarsarauer/Library/Ethereum/rinkeby/geth/chaindata

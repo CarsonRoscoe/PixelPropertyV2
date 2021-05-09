@@ -1,0 +1,1 @@
+geth account import ./testaccount.txt

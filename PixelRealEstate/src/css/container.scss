@@ -1,0 +1,36 @@
+.uiBase {
+    height: 100%;
+    position: relative;
+    .header {
+        position: relative;
+        z-index: 20000;
+        height: 70px;
+        font: $font3;
+        text-align: center;
+    }
+    .containerParent {
+        height: calc(100% - 125px);
+        overflow-y: overlay;
+        position: relative;
+        z-index: 12000;
+        .panelItem {
+            &.itemTitle {
+                font-weight: 600;
+            }
+        }
+    }
+    .footer {
+        height: 50px;
+        display: inline-block;
+        width: 100%;
+        position: relative;
+        z-index: 16000;
+        .bottomNav {
+            display: inline-block;
+            height: 40px;
+            width: calc(33% - 10px);
+            margin: 5px;
+            text-align: center;
+        }
+    }
+}
