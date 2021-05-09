@@ -148,6 +148,8 @@ let accounts;
 let pxlPropertyTestInstance;
 let pxlPropertyUnitTests;
 
+console.info(keccak256(toUtf8Bytes('LEVEL_PIXEL_PROPERTY')));
+
 describe("Full Test", function() {
   it("PXLProperty Testing Deployment", async function() {
     try {
@@ -159,12 +161,13 @@ describe("Full Test", function() {
       const PXLPropertyL2_1 = await ethers.getContractFactory("MumbaiPXLProperty");
       const pxlPropertyL2_1 = await PXLPropertyL2_1.deploy(1000000000);
 
-      const PXLPropertyL2_2 = await ethers.getContractFactory("ArbitrumPXLProperty");
+      const PXLPropertyL2_2 = await ethers.getContractFactory("FujiPXLProperty");
       const pxlPropertyL2_2 = await PXLPropertyL2_2.deploy(1000000000);
 
       await pxlProperty.deployed();
       await pxlPropertyL2_1.deployed();
       await pxlPropertyL2_2.deployed();
+
   
       const VirtualRealEstateV2 = await ethers.getContractFactory("VirtualRealEstateV2");
       const virtualRealEstateV2 = await VirtualRealEstateV2.deploy("https://pixelproperty.io/nft/{id}", pxlProperty.address, pxlProperty.address);
