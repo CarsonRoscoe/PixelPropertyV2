@@ -19,6 +19,7 @@ function createURL(chainId, apiCallName, mandatoryArgs, optionalArgs) {
             result += '?';
         }
         else {
+            let a = 
             result += '?';
         }
     } else {
